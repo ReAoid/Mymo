@@ -1,0 +1,23 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.local
+
+# Rust / Tauri
+src-tauri/target
+src-tauri/Cargo.lock
+src-tauri/gen
+
+# Editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Local helper scripts (not part of the app)
+.tools
+
+# Local-only dev notes
+DEV_NOTES.md
