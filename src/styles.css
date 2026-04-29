@@ -31,71 +31,21 @@ body,
 }
 
 .pet-stage {
-  width: 260px;
-  height: 320px;
+  width: 320px;
+  height: 360px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   cursor: grab;
+  position: relative;
 }
 .pet-stage:active {
   cursor: grabbing;
 }
-
-.pet-body {
-  width: 180px;
-  height: 220px;
-  background: radial-gradient(circle at 50% 40%, #ffd0e0, #ff9bb8 70%, #e06a8e);
-  border-radius: 50% 50% 42% 42% / 55% 55% 45% 45%;
-  box-shadow: 0 10px 30px rgba(230, 100, 140, 0.35),
-    inset -6px -10px 20px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: transform 0.25s ease;
-}
-.pet-body.talking {
-  animation: bounce 0.6s ease-in-out infinite;
-}
-.pet-body.thinking {
-  animation: sway 1.8s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-@keyframes sway {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
-.pet-eyes {
-  position: absolute;
-  top: 42%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 30px;
-}
-.pet-eye {
-  width: 18px;
-  height: 24px;
-  background: #2a1620;
-  border-radius: 50%;
-  animation: blink 4s infinite;
-}
-@keyframes blink {
-  0%, 92%, 100% { transform: scaleY(1); }
-  95% { transform: scaleY(0.1); }
-}
-.pet-mouth {
-  position: absolute;
-  bottom: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 10px;
-  border-bottom: 3px solid #2a1620;
-  border-radius: 0 0 20px 20px;
+.pet-stage canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .bubble {
