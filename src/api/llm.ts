@@ -1,22 +1,19 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import type { ChatMessage } from "../store";
+import { usePetStore } from "../store";
 
 type OnChunk = (text: string) => void;
-
-const SYSTEM_PROMPT =
-  "你是 Mymo，一只温柔、机灵、陪伴感十足的桌面 AI 宠物。回答尽量简短（两三句），语气亲切偶尔俏皮。使用简体中文。";
-
-const provider = (import.meta.env.VITE_LLM_PROVIDER as string) || "anthropic";
 
 export async function streamChat(
   history: ChatMessage[],
   onChunk: OnChunk,
   signal: AbortSignal
 ): Promise<void> {
+  const { provider } = usePetStore.getState().settings;
   if (provider === "anthropic") return streamAnthropic(history, onChunk, signal);
   if (provider === "openai") return streamOpenAI(history, onChunk, signal);
   if (provider === "ollama") return streamOllama(history, onChunk, signal);
-  throw new Error(`未知的 VITE_LLM_PROVIDER: ${provider}`);
+  throw new Error(`未知的 provider: ${provider}`);
 }
 
 // ---------- Anthropic ----------
@@ -25,14 +22,13 @@ async function streamAnthropic(
   onChunk: OnChunk,
   signal: AbortSignal
 ) {
-  const key = import.meta.env.VITE_ANTHROPIC_API_KEY;
-  const model = import.meta.env.VITE_ANTHROPIC_MODEL || "claude-sonnet-4-6";
-  if (!key) throw new Error("缺少 VITE_ANTHROPIC_API_KEY");
+  const { apiKey, model, systemPrompt } = usePetStore.getState().settings;
+  if (!apiKey) throw new Error("缺少 Anthropic API Key（右键宠物打开设置）");
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-api-key": key,
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
       "anthropic-dangerous-direct-browser-access": "true",
     },
@@ -40,7 +36,7 @@ async function streamAnthropic(
     body: JSON.stringify({
       model,
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt,
       stream: true,
       messages: history.map((m) => ({ role: m.role, content: m.content })),
     }),
@@ -64,22 +60,22 @@ async function streamOpenAI(
   onChunk: OnChunk,
   signal: AbortSignal
 ) {
-  const key = import.meta.env.VITE_OPENAI_API_KEY;
-  const base = import.meta.env.VITE_OPENAI_BASE_URL || "https://api.openai.com/v1";
-  const model = import.meta.env.VITE_OPENAI_MODEL || "gpt-4o-mini";
-  if (!key) throw new Error("缺少 VITE_OPENAI_API_KEY");
+  const { apiKey, baseUrl, model, systemPrompt } =
+    usePetStore.getState().settings;
+  if (!apiKey) throw new Error("缺少 OpenAI API Key（右键宠物打开设置）");
+  const base = baseUrl || "https://api.openai.com/v1";
   const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${key}`,
+      authorization: `Bearer ${apiKey}`,
     },
     signal,
     body: JSON.stringify({
       model,
       stream: true,
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: systemPrompt },
         ...history.map((m) => ({ role: m.role, content: m.content })),
       ],
     }),
@@ -102,8 +98,8 @@ async function streamOllama(
   onChunk: OnChunk,
   signal: AbortSignal
 ) {
-  const base = import.meta.env.VITE_OLLAMA_BASE_URL || "http://localhost:11434";
-  const model = import.meta.env.VITE_OLLAMA_MODEL || "qwen2.5:7b";
+  const { baseUrl, model, systemPrompt } = usePetStore.getState().settings;
+  const base = baseUrl || "http://localhost:11434";
   const res = await fetch(`${base}/api/chat`, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -112,7 +108,7 @@ async function streamOllama(
       model,
       stream: true,
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: systemPrompt },
         ...history.map((m) => ({ role: m.role, content: m.content })),
       ],
     }),

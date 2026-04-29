@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import Pet from "./pet/Pet";
 import Bubble from "./pet/Bubble";
 import ChatPanel from "./chat/ChatPanel";
+import SettingsPanel from "./settings/SettingsPanel";
 import { usePetStore } from "./store";
 
 export default function App() {
-  const { provider, model } = usePetStore();
+  const { settings } = usePetStore();
 
   useEffect(() => {
-    // Tauri 全局事件：热键 toggle-chat
     let unlisten: (() => void) | undefined;
     (async () => {
       try {
@@ -27,8 +27,9 @@ export default function App() {
   return (
     <div className="app">
       <div className="status">
-        {provider} · {model}
+        {settings.provider} · {settings.model}
       </div>
+      <SettingsPanel />
       <ChatPanel />
       <Bubble />
       <Pet />

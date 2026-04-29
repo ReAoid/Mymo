@@ -8,7 +8,7 @@ Live2DModel.registerTicker(PIXI.Ticker);
 const MODEL_URL = "/live2d/Pio/model.json";
 
 export default function Pet() {
-  const { petState, toggleChat } = usePetStore();
+  const { petState, toggleChat, setSettingsOpen } = usePetStore();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const modelRef = useRef<Live2DModel | null>(null);
@@ -101,13 +101,19 @@ export default function Pet() {
     if (dx < 4 && dy < 4) toggleChat();
   };
 
+  const onContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setSettingsOpen(true);
+  };
+
   return (
     <div
       ref={containerRef}
       className="pet-stage"
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      title="点击打开聊天，按住拖拽移动窗口"
+      onContextMenu={onContextMenu}
+      title="点击聊天，右键设置，按住拖拽"
     >
       <canvas ref={canvasRef} />
     </div>

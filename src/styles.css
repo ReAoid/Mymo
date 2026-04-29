@@ -132,3 +132,127 @@ body,
   padding: 3px 8px;
   border-radius: 10px;
 }
+
+/* ---------- 设置面板 ---------- */
+.settings-panel {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+  width: 360px;
+  max-height: calc(100vh - 260px);
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+}
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: linear-gradient(90deg, #ffd4e2 0%, #ffe8bd 100%);
+  font-size: 13px;
+  font-weight: 600;
+  color: #5a3a4a;
+}
+.settings-body {
+  padding: 12px 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.settings-row > span {
+  flex: 0 0 78px;
+  color: #666;
+}
+.settings-row input,
+.settings-row select,
+.settings-row textarea {
+  flex: 1;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  padding: 6px 9px;
+  font-size: 12px;
+  outline: none;
+  background: #fff;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.settings-row input:focus,
+.settings-row select:focus,
+.settings-row textarea:focus {
+  border-color: #ff9bb8;
+}
+.settings-row textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+.settings-row--col {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.settings-row--col > span {
+  flex: none;
+}
+.settings-key {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+.settings-key input {
+  flex: 1;
+}
+.icon-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  color: #666;
+  border-radius: 6px;
+}
+.icon-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+.btn-ghost,
+.btn-primary {
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-ghost {
+  background: #ececec;
+  color: #444;
+}
+.btn-ghost:hover {
+  background: #e0e0e0;
+}
+.btn-primary {
+  background: #ff9bb8;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #ff86a8;
+}
